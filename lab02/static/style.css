@@ -27,25 +27,34 @@ main {
   margin: 3vh;
 }
 
-section {
+.card {
   box-sizing: border-box;
   border: dotted 1px #ccc;
-  width: 30vh;
+  width: calc(25% - 20px);
   height: auto;
   padding: 10px;
   margin: 10px;
 }
 
-section img {
+.card img {
   width: calc(100% + 20px);
   height: auto;
   margin-left: -10px;
 }
 
+.resturantList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media only screen and (max-width: 1000px) {
-  /* Media queries go here */
+  .card {
+    width: calc(50% - 20px);
+  }
 }
 
 @media only screen and (max-width: 600px) {
-  /* Media queries go here */
+  .card {
+    width: 100%;
+  }
 }

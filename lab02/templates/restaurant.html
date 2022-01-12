@@ -17,8 +17,9 @@
         <p>Search location: {{city}}</p>
         <p>Search term: {{search_term or 'None Specified'}}</p>
         <h2>Top Restaurant:</h2>
-
-        {% include 'includes/resturant-list.html' %}
+        <section class="resturantList">
+            {% include 'includes/resturant-list.html' %}
+        </section>
 
     </main>
 </body>
