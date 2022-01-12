@@ -1,0 +1,41 @@
+body * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+Add some style blocks below this line to style the card.
+*/
+
+/* https://cs396-web-dev.github.io/winter2022/css-reference/box-model/ */
+.wrapper {
+  box-sizing: border-box;
+  border: dotted 1px #ccc;
+  width: 30vh;
+  height: auto;
+  padding: 10px;
+  /*
+    Alternative syntax:
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    */
+  margin: 10px;
+  /*
+    Alternative syntax:
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    */
+}
+
+.wrapper img {
+  width: calc(100% + 20px);
+  height: auto;
+  margin-left: -10px;
+}
