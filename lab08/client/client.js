@@ -30,7 +30,7 @@ const initializeConnection = ev => {
     
     connection.onmessage = e => {
         const data = JSON.parse(e.data);
-        console.log(data);
+        console.log('LOG DATA', data);
 
         /***********************************************************
          * Client-Side Logic: Your Job 
@@ -44,6 +44,17 @@ const initializeConnection = ev => {
          *   2. If data.type is "chat", append the chat message 
          *      to the #chat div (main panel).
          ************************************************************/
+        
+        let type = data.type;
+        if (type === "login" || type === "disconnect") {
+            utils.showUserList(data.users);
+        }
+
+        else if (type === "chat") {
+            console.log(data.username, data.textg);
+            utils.showChatMessages(data.username, data.text);
+        }
+        
 
     };
 };
@@ -115,6 +126,17 @@ const utils = {
         utils.hideElements(['#step2']);
         utils.showElements(
             ['#name-display', '#chat-container', '#send-container', '#status']);
+    },
+
+    showChatMessages: (username, chatMesg) => {
+        console.log(username, chatMesg);
+        qs("#chat").innerHTML += `<p>${username}: ${chatMesg}. </p>`;
+    },
+
+    showUserList: (userList) => {
+        // qs("#users-list").textContent = `${userList}.`;
+        userList.forEach(user => qs("#users-list").innerHTML += `${user} <br>`)
+        utils.showElements("#users-list");
     },
 
     showElements: elements => {

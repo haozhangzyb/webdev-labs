@@ -23,11 +23,47 @@ PORT = os.environ.get('WS_PORT') or 8081
 async def respond_to_message(websocket, message):
     try:
         data = json.loads(message)
+        print(data)
     except:
         data = { 
             'error': 'error decoding {0}'.format(message),
             'details': 'See instructions for list of valid message formats.'}
         return await websocket.send(json.dumps(data))
+    
+    # Goal: let's response to different kinds of messages differently:
+    type = data.get('type')
+    
+    #  DONE: Login to websocket server
+    if type == 'login':
+        print('User is trying to log in', data)
+        logged_in_users[websocket] = data.get('username')
+        message = {
+            "type" : "login",
+            "users" : list(logged_in_users.values())
+        }
+        # boradcast everyone when login
+        for socket in logged_in_users:
+            await socket.send(json.dumps(message))
+
+    # DONE: when 
+    elif type == 'chat':
+        print('Broadcast a message', data)
+        for socket in logged_in_users:
+            await socket.send(json.dumps(data))
+
+    elif type == 'disconnect':
+        del logged_in_users[websocket]
+        message = {
+            "type" : "login",
+            "users" : list(logged_in_users.values())
+        }
+        # boradcast everyone when disconnect
+        for socket in logged_in_users:
+            await socket.send(json.dumps(message))
+        print('stop tracking this web socket', data)
+    else:
+        print('Read the instructions to format your message coreectly')
+    
     '''
     ******************************************************************
     * Server-Side Logic: Your Job 
@@ -79,7 +115,7 @@ async def respond_to_message(websocket, message):
     ********************************************************************/
     '''
     
-    await websocket.send(json.dumps(data))
+    # await websocket.send(json.dumps(data))
     # for sock in logged_in_users:
     #     # TODO: replace "data" with a message that conforms to
     #     # the specs above:
@@ -91,6 +127,8 @@ async def broadcast_messages(websocket, path):
     try:
         async for message in websocket:
             await respond_to_message(websocket, message)
+    
+    #  the except and finally code handles when the disconnects
     except websockets.ConnectionClosed as e:
         print('A client just disconnected')
         print(e)
